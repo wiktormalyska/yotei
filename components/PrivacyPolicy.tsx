@@ -1,5 +1,6 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import React from "react";
+import Markdown from 'react-native-markdown-display';
 import {useTheme} from "@/contexts/ThemeContext";
 import {Button, SidebarButtonType} from "@/components/Button";
 import {useLoadingScreen} from "@/contexts/LoadingScreenContext";
@@ -22,36 +23,87 @@ export const PrivacyPolicy = () => {
         hide()
     }
 
+    const privacyContent = `
+# Privacy Policy
+*Last updated: December 06, 2025*
+
+## 1. Introduction
+This Privacy Policy describes how Wiktor Małyska ("we," "us," or "our") manages data when you use the "Yotei" mobile application ("App").
+
+## 2. No Data Collection by Developer
+We operate on a strict **"client-side only"** basis to ensure your privacy and security.
+* **We do not possess or operate servers for this App.**
+* **We do not collect usage analytics.**
+* **We do not see, store, process, or transmit your login credentials or schedule data to ourselves or any third parties.**
+
+## 3. Local Data Storage & Direct Communication
+All sensitive data (including student ID numbers, passwords, and schedule information) is:
+1.  Stored **exclusively locally on your device**.
+2.  Transmitted **directly** from your device to PJATK's official servers to authenticate and retrieve data.
+
+This process is technically identical to logging into the university website via a standard web browser. The App acts merely as a specialized interface to visualize this data.
+
+## 4. Interaction with External Services
+Since the App functions as a user-agent for PJATK services, your interactions are subject to the privacy practices of the Polsko-Japońska Akademia Technik Komputerowych. Your device's IP address and login requests are visible to PJATK servers, just as they would be if you used a web browser.
+
+## 5. Data Security
+Because we do not host your data, its security depends primarily on:
+* The physical security of your specific mobile device (screen locks, biometrics).
+* The security of your operating system (keeping Android/iOS updated).
+* The strength of your network connection (avoiding insecure public Wi-Fi when logging in).
+
+## 6. Children's Privacy
+Our App is not intended for individuals under the age of 13. We do not knowingly collect personal data from children.
+
+## 7. Changes to This Policy
+We may update our Privacy Policy. Any changes will be posted within the Application and will take effect immediately upon posting.
+
+## 8. Contact
+If you have any questions about this Privacy Policy, please contact us at: wiktormalyska03@gmail.com
+    `;
+
+    // Spójne style markdown z komponentem ToS
+    const markdownStyles = {
+        body: {
+            fontSize: 16,
+            lineHeight: 24,
+            color: currentTheme.style.textSecondary,
+        },
+        heading1: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            marginBottom: 10,
+            marginTop: 0,
+            color: currentTheme.style.text,
+        },
+        heading2: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginTop: 20,
+            marginBottom: 10,
+            color: currentTheme.style.text,
+        },
+        strong: {
+            fontWeight: 'bold',
+            color: currentTheme.style.text,
+        },
+        em: {
+            fontStyle: 'italic',
+            color: currentTheme.style.textSecondary,
+        },
+        paragraph: {
+            marginBottom: 12,
+        },
+        list_item: {
+            marginBottom: 8,
+        }
+    };
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
             paddingHorizontal: 16,
             paddingVertical: 12,
-        },
-        h1: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            marginBottom: 8,
-            color: currentTheme.style.text
-        },
-        h2: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            marginTop: 16,
-            marginBottom: 8,
-            color: currentTheme.style.text
-        },
-        paragraph: {
-            fontSize: 16,
-            lineHeight: 22,
-            marginBottom: 12,
-            color: currentTheme.style.textSecondary
-        },
-        italic: {
-            fontSize: 14,
-            fontStyle: 'italic',
-            marginBottom: 16,
-            color: currentTheme.style.textSecondary
         },
         layout: {
             flex: 1,
@@ -62,56 +114,15 @@ export const PrivacyPolicy = () => {
     return (
         <View style={styles.layout}>
             <ScrollView style={styles.container}>
-                <Text style={styles.h1}>Privacy Policy</Text>
-                <Text style={styles.italic}>Last updated: October 27, 2025</Text>
-
-                <Text style={styles.paragraph}>
-                    This Privacy Policy describes how Wiktor Małyska ("we," "us," or "our") manages data when you use the PJATK Schedule mobile application ("Application").
-                </Text>
-
-                <Text style={styles.h2}>1. Data Collection and Use</Text>
-                <Text style={styles.paragraph}>
-                    The Application was designed with your privacy in mind.
-                </Text>
-                <Text style={styles.paragraph}>
-                    <Text style={styles.paragraph}>All data necessary for the application's operation (such as authentication credentials for PJATK services, user preferences, etc.) is stored </Text>
-                    <Text style={[styles.paragraph, {fontWeight: 'bold'}]}>exclusively locally on your device</Text>
-                    <Text style={styles.paragraph}>.</Text>
-                </Text>
-
-                <Text style={styles.paragraph}>
-                    <Text style={styles.paragraph}>This data is used by the Application </Text>
-                    <Text style={[styles.paragraph, {fontWeight: 'bold'}]}>solely for the purpose of communicating with the official services of the Polish-Japanese Academy of Information Technology (PJATK)</Text>
-                    <Text style={styles.paragraph}> to retrieve information necessary for the Application and its functions (e.g., class schedules, grades).</Text>
-                </Text>
-
-                <Text style={styles.paragraph}>
-                    We do not collect, store, or share your personal data on any external servers not belonging to PJATK. We do not share your data with any third parties for marketing or analytical purposes.
-                </Text>
-
-                <Text style={styles.h2}>2. Data Security</Text>
-                <Text style={styles.paragraph}>
-                    The security of your data is important to us. Since data is stored only on your device, its security also depends on the general security of your device (such as screen lock passwords, operating system updates, etc.).
-                </Text>
-
-                <Text style={styles.h2}>3. Children's Privacy</Text>
-                <Text style={styles.paragraph}>
-                    Our Application is not intended for individuals under the age of 13. We do not knowingly collect personal data from children under 13.
-                </Text>
-
-                <Text style={styles.h2}>4. Changes to This Privacy Policy</Text>
-                <Text style={styles.paragraph}>
-                    We may update our Privacy Policy from time to time. Any changes will be posted within the Application
-                    and will take effect from the "Last updated" date visible at the top of this policy. It is
-                    recommended to review this page regularly.
-                </Text>
-
-                <Text style={styles.h2}>5. Contact</Text>
-                <Text style={styles.paragraph}>
-                    If you have any questions about this Privacy Policy, please contact us at: wiktormalyska03@gmail.com
-                </Text>
+                <Markdown style={markdownStyles}>
+                    {privacyContent}
+                </Markdown>
             </ScrollView>
-            <Button onClick={handleAccept} title={"Click to accept Privacy Policy"} type={SidebarButtonType.SECONDARY}></Button>
+            <Button
+                onClick={handleAccept}
+                title={"Click to accept Privacy Policy"}
+                type={SidebarButtonType.SECONDARY}
+            />
         </View>
     )
 }

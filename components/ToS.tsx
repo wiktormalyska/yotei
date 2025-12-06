@@ -1,5 +1,6 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import React from "react";
+import Markdown from 'react-native-markdown-display';
 import {useTheme} from "@/contexts/ThemeContext";
 import {Button, SidebarButtonType} from "@/components/Button";
 import {useTos} from "@/hooks/use-tos";
@@ -23,36 +24,89 @@ export const ToS = () => {
         hide()
     }
 
+    const tosContent = `
+# Terms of Service
+*Last updated: December 06, 2025*
+
+## Agreement to Terms
+These Terms of Service constitute a legally binding agreement made between you ("User") and Wiktor Małyska ("we," "us," or "our"), regarding your access to and use of the "Yotei" mobile application (“App”).
+
+## Nature of the Application
+Yotei acts solely as a client-side interface (a specialized browser) designed to assist Users in visualizing and managing their personal schedule data. The App does not generate this data but fetches it from external services upon the User's direct request and authorization.
+
+## Unofficial Status
+Yotei is an independent, unofficial application developed by Wiktor Małyska. It is **not** affiliated, endorsed, authorized, maintained, sponsored, or in any way officially connected with Polsko-Japońska Akademia Technik Komputerowych (PJATK) or any of its subsidiaries or affiliates.
+
+## User Responsibility for External Services
+By using the App, you acknowledge and agree that:
+1. You are solely responsible for any interactions between this App and external services (specifically PJATK systems).
+2. You represent that you have the necessary authorization to access the data retrieved by the App.
+3. The App acts as a user-agent on your behalf. Any data transmission to or from PJATK servers is initiated by you. We are not responsible for how external services process your requests or for any potential violations of their specific Terms of Service caused by your use of third-party tools.
+
+## Data Privacy and Storage
+Your privacy is paramount. Credentials and personal data are stored **locally on your device**. The App uses this data exclusively to authenticate with PJATK services directly from your device to retrieve necessary information. We do not collect, store, share, or transfer your login credentials or personal schedule data to our own servers or any third parties.
+
+## Intellectual Property
+The name "PJATK" as well as related names, marks, emblems, and images are registered trademarks of their respective owners. They are used in this App solely for identification and reference purposes and implies no association with the trademark holder.
+
+## License to Use
+We grant you a limited, non-exclusive, non-transferable license to use the App for personal, non-commercial purposes, provided you comply with these Terms.
+
+## Limitation of Liability
+The App is provided “as is” and “as available”. We specifically disclaim any liability for actions taken by third-party services (e.g., account suspension by the university) resulting from the use of this App. You use Yotei entirely at your own risk.
+
+## Changes to Terms
+We reserve the right to modify these Terms at any time. Continued use of the App signifies your acceptance of updated Terms.
+
+## Governing Law
+These Terms shall be governed by and construed in accordance with the laws of Poland.
+
+## Contact Information
+For questions about these Terms, contact: wiktormalyska03@gmail.com.
+    `;
+
+    // Style dla biblioteki Markdown (mapowanie tagów na style)
+    const markdownStyles = {
+        body: {
+            fontSize: 16,
+            lineHeight: 24,
+            color: currentTheme.style.textSecondary,
+        },
+        heading1: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            marginBottom: 10,
+            marginTop: 0,
+            color: currentTheme.style.text,
+        },
+        heading2: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginTop: 20,
+            marginBottom: 10,
+            color: currentTheme.style.text,
+        },
+        strong: {
+            fontWeight: 'bold',
+            color: currentTheme.style.text,
+        },
+        em: {
+            fontStyle: 'italic',
+            color: currentTheme.style.textSecondary,
+        },
+        paragraph: {
+            marginBottom: 12,
+        },
+        list_item: {
+            marginBottom: 8,
+        }
+    };
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
             paddingHorizontal: 16,
             paddingVertical: 12,
-        },
-        h1: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            marginBottom: 8,
-            color: currentTheme.style.text
-        },
-        h2: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            marginTop: 16,
-            marginBottom: 8,
-            color: currentTheme.style.text
-        },
-        paragraph: {
-            fontSize: 16,
-            lineHeight: 22,
-            marginBottom: 12,
-            color: currentTheme.style.textSecondary
-        },
-        italic: {
-            fontSize: 14,
-            fontStyle: 'italic',
-            marginBottom: 16,
-            color: currentTheme.style.textSecondary
         },
         layout: {
             flex: 1,
@@ -60,82 +114,19 @@ export const ToS = () => {
         }
     });
 
+
     return (
         <View style={styles.layout}>
             <ScrollView style={styles.container}>
-                <Text style={styles.h1}>Terms of Service</Text>
-                <Text style={styles.italic}>Last updated: October 27, 2025</Text>
-
-                <Text style={styles.h2}>Agreement to Terms</Text>
-                <Text style={styles.paragraph}>
-                    These Terms of Service constitute a legally binding agreement made between you ("User") and Wiktor
-                    Małyska ("we," "us," or "our"), regarding your access to and use of the PJATK Schedule mobile
-                    application (“App”) and any related services.
-                </Text>
-
-                <Text style={styles.h2}>Acceptance</Text>
-                <Text style={styles.paragraph}>
-                    By accessing or using the App, you agree to comply with and be bound by these Terms. If you do not
-                    agree, please do not use the App.
-                </Text>
-
-                <Text style={styles.h2}>License to Use</Text>
-                <Text style={styles.paragraph}>
-                    We grant you a limited, non-exclusive, non-transferable license to use the App for personal,
-                    non-commercial purposes. All rights not expressly granted are reserved.
-                </Text>
-
-                <Text style={styles.h2}>Changes to App and Data Collection</Text>
-                <Text style={styles.paragraph}>
-                    We reserve the right to update, change, or remove any part of the App, including which data we
-                    collect,
-                    at any time and for any reason without prior notice. By continuing to use the App, you accept these
-                    modifications.
-                </Text>
-
-                <Text style={styles.h2}>Data Storage</Text>
-                <Text style={styles.paragraph}>
-                    Personal data is stored locally on your device and is used solely for the purpose of communicating
-                    with
-                    PJATK services to retrieve data necessary for the application and its functions. We do not share or
-                    transfer your personal data to any other external servers.
-                </Text>
-
-                <Text style={styles.h2}>Use of Third-Party Materials</Text>
-                <Text style={styles.paragraph}>
-                    The App may include trademarks, logos, and other intellectual property of Polsko-Japońska Akademia
-                    Technik Komputerowych (PJATK) used with permission. Unauthorized use is strictly prohibited.
-                </Text>
-
-                <Text style={styles.h2}>User Obligations</Text>
-                <Text style={styles.paragraph}>
-                    You agree to not misuse the App, attempt to gain unauthorized access, or infringe copyrights and
-                    intellectual property rights.
-                </Text>
-
-                <Text style={styles.h2}>Termination</Text>
-                <Text style={styles.paragraph}>
-                    We may suspend or terminate your access to the App at any time, without notice, if you violate these
-                    Terms.
-                </Text>
-
-                <Text style={styles.h2}>Limitation of Liability</Text>
-                <Text style={styles.paragraph}>
-                    The App is provided “as is” and “as available”, without warranties of any kind. We are not liable
-                    for
-                    any damages resulting from your use of the App.
-                </Text>
-                <Text style={styles.h2}>Governing Law</Text>
-                <Text style={styles.paragraph}>
-                    These Terms shall be governed by and construed in accordance with the laws of Poland.
-                </Text>
-
-                <Text style={styles.h2}>Contact Information</Text>
-                <Text style={styles.paragraph}>
-                    For questions about these Terms, contact: wiktormalyska03@gmail.com.
-                </Text>
+                <Markdown style={markdownStyles}>
+                    {tosContent}
+                </Markdown>
             </ScrollView>
-            <Button onClick={handleAccept} title={"Click to accept Terms of Service"} type={SidebarButtonType.SECONDARY}></Button>
+            <Button
+                onClick={handleAccept}
+                title={"Click to accept Terms of Service"}
+                type={SidebarButtonType.SECONDARY}
+            />
         </View>
     )
 }

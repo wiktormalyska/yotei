@@ -18,7 +18,7 @@ export default function WelcomePage() {
     const {openModal, setContent, setTitle, setIsClosable} = useModal()
 
     useEffect(() => {
-        setPageTitle("PJATK Schedule")
+        setPageTitle("Yotei")
         setTitle("Terms of Service");
         setContent(<ToS/>);
         setIsClosable(false);
@@ -82,8 +82,7 @@ export default function WelcomePage() {
             <View style={styles.topContainer}>
                 <Logo height={"150"} width={"150"}></Logo>
                 <View style={styles.bottomContainer}>
-                    <Text style={styles.textHeader}>Welcome to</Text>
-                    <Text style={styles.textHeader}>PJATK Schedule</Text>
+                    <Text style={styles.textHeader}>Welcome to Yotei</Text>
                 </View>
 
             </View>
