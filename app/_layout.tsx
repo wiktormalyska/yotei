@@ -14,6 +14,7 @@ import {ModalProvider} from "@/contexts/ModalContext";
 import Modal from "@/components/Modal";
 import {usePrivacyPolicy} from "@/hooks/use-privacy-policy";
 import {ScheduleDataProvider} from "@/contexts/ScheduleDataContext";
+import {ScheduleResponseCacheContextProvider} from "@/contexts/ScheduleResponseCacheContext";
 
 const AppContent = () => {
     const {currentTheme, isLightTheme} = useTheme();
@@ -63,18 +64,20 @@ const AppContent = () => {
 export default function RootLayout() {
     return (
         <ThemeProvider>
-            <ScheduleDataProvider>
-                <LoadingScreenProvider>
-                    <ModalProvider>
-                        <PageTitleProvider>
-                            <AuthContextProvider>
+            <ScheduleResponseCacheContextProvider>
+                <ScheduleDataProvider>
+                    <LoadingScreenProvider>
+                        <ModalProvider>
+                            <PageTitleProvider>
+                                <AuthContextProvider>
 
-                                <AppContent/>
-                            </AuthContextProvider>
-                        </PageTitleProvider>
-                    </ModalProvider>
-                </LoadingScreenProvider>
-            </ScheduleDataProvider>
+                                    <AppContent/>
+                                </AuthContextProvider>
+                            </PageTitleProvider>
+                        </ModalProvider>
+                    </LoadingScreenProvider>
+                </ScheduleDataProvider>
+            </ScheduleResponseCacheContextProvider>
         </ThemeProvider>
     );
 }

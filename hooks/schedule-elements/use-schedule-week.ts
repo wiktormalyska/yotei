@@ -1,33 +1,36 @@
-import {useScheduleAuth} from "@/hooks/use-schedule-auth";
+import {useScheduleResponseCache} from "@/contexts/ScheduleResponseCacheContext";
 import {parseDocument} from 'htmlparser2';
 import {getElementById, getElementsByClassName, getElementsByTagName, textContent} from 'domutils';
 
 export const useScheduleWeek = () => {
-    const {authenticatedRequest} = useScheduleAuth();
+    const {getCachedResponse} = useScheduleResponseCache();
 
-    const getScheduleWeek = async (): Promise<string | null> => {
+    const getScheduleWeek = (): string | null => {
+        const response = getCachedResponse();
+        if (!response || !response.ok) {
+            console.error('Cannot get schedule week, cached response is invalid or missing.');
+            return null;
+        }
+
         try {
-            const response = await authenticatedRequest('https://planzajec.pjwstk.edu.pl/TwojPlan.aspx');
-
-            if(!response.ok) {
-                console.error(`Network error: ${response.status} ${response.statusText}`);
-                return null;
-            }
-
-            const html = await response.text();
+            const html = response.text;
             const dom = parseDocument(html);
 
-            const scheduleElement = getElementById('ctl00_ContentPlaceHolder1_DedykowanyPlanStudenta_PlanZajecRadScheduler', dom.children)
-            const topWrapElement = getElementsByClassName('rsTopWrap', scheduleElement!.children)[0]
-            const rsHeader = getElementsByClassName('rsHeader', topWrapElement!.children)[0]
-            const weekElement = getElementsByTagName('h2', rsHeader!.children)[0]
+            const scheduleElement = getElementById('ctl00_ContentPlaceHolder1_DedykowanyPlanStudenta_PlanZajecRadScheduler', dom.children);
+            if (!scheduleElement) return null;
 
-            const weekText = textContent(weekElement).trim().replace(/\s+/g, ' ');
+            const topWrapElement = getElementsByClassName('rsTopWrap', scheduleElement.children)[0];
+            if (!topWrapElement) return null;
 
-            console.log('Week element:', weekText);
-            return weekText
+            const rsHeader = getElementsByClassName('rsHeader', topWrapElement.children)[0];
+            if (!rsHeader) return null;
+
+            const weekElement = getElementsByTagName('h2', rsHeader.children)[0];
+            if (!weekElement) return null;
+
+            return textContent(weekElement).trim().replace(/\s+/g, ' ');
         } catch (error) {
-            console.error('Error fetching schedule week:', error);
+            console.error('Error parsing schedule week from cached response:', error);
             return null;
         }
     };

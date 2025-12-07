@@ -1,31 +1,24 @@
-import {useScheduleAuth} from "@/hooks/use-schedule-auth";
+import {useScheduleResponseCache} from "@/contexts/ScheduleResponseCacheContext";
 
 export const useScheduleStudentName = () => {
-    const {authenticatedRequest} = useScheduleAuth()
+    const {getCachedResponse} = useScheduleResponseCache();
 
-    const  getStudentName = async ():Promise<string | null> => {
-        try {
-            const response = await authenticatedRequest('https://planzajec.pjwstk.edu.pl/TwojPlan.aspx');
-
-            if(!response.ok) {
-                console.error(`Network error: ${response.status} ${response.statusText}`);
-                return null;
-            }
-
-            const html = await response.text();
-            const nameMatch = html.match(/id="lblZalogowany"[^>]*>([^<]+)</i);
-            const studentName = nameMatch?.[1]?.trim().split(": ")[1] || null;
-
-            console.log('Student name:', studentName);
-
-            return studentName;
-        } catch (error) {
-            console.error('Error fetching student name:', error);
+    const getStudentName = (): string | null => {
+        const response = getCachedResponse();
+        if (!response || !response.ok) {
+            console.error('Cannot get student name, cached response is invalid or missing.');
             return null;
         }
-    }
 
-    return {
-        getStudentName
-    }
+        try {
+            const html = response.text;
+            const nameMatch = html.match(/id="lblZalogowany"[^>]*>([^<]+)</i);
+            return nameMatch?.[1]?.trim().split(": ")[1] || null;
+        } catch (error) {
+            console.error('Error parsing student name from cached response:', error);
+            return null;
+        }
+    };
+
+    return {getStudentName};
 };
